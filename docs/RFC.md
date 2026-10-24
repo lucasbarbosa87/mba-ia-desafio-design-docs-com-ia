@@ -1,5 +1,7 @@
 # RFC: Sistema de Webhooks de Notificação de Pedidos
 
+## Metadados
+
 | Campo | Valor |
 | --- | --- |
 | **Autor** | Lucas Barbosa, a partir da reunião técnica conduzida por Larissa (Tech Lead) |
