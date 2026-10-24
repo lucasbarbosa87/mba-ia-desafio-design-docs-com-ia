@@ -49,7 +49,7 @@ Esta feature adiciona **webhooks outbound**. O cliente B2B cadastra uma URL e pa
 
 | ID | Objetivo | Métrica | Meta |
 | --- | --- | --- | --- |
-| PRD-OBJ-01 | Notificação "em tempo real" na visão do cliente | Latência entre o commit da mudança de status e a primeira tentativa de entrega, com endpoint saudável | **< 10 s** (p95). O desenho dá pior caso de ~2 s de espera do polling mais até 10 s de timeout HTTP ([09:02] Marcos, [09:10] Larissa) |
+| PRD-OBJ-01 | Notificação "em tempo real" na visão do cliente | Latência entre o commit da mudança de status e a primeira tentativa de entrega, com endpoint saudável | **< 10 s** (p95). O polling acrescenta no máximo ~2 s ([09:10] Larissa); o resto do orçamento é o tempo de resposta do cliente. Um endpoint que leva o timeout inteiro de 10 s é tratado como falha, não como "saudável" ([09:02] Marcos, [09:42] Diego) |
 | PRD-OBJ-02 | Reter e atender os clientes que pediram a feature | Clientes do pedido original com webhook em produção | **3 de 3** (Atlas, MaxDistribuição, Nova Cargo) até **fim de novembro** ([09:00] Marcos, [09:45] Marcos) |
 | PRD-OBJ-03 | Nenhuma mudança de status "silenciosa" | % de mudanças de status com webhook assinante que geraram evento na outbox | **100%**, garantido por transação atômica ([09:40] Bruno) |
 | PRD-OBJ-04 | Tolerar indisponibilidade do cliente | Janela coberta por retentativas antes de ir para a DLQ | **≈ 15 h** (1m/5m/30m/2h/12h) ([09:17] Diego) |

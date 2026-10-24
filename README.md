@@ -86,7 +86,7 @@ Depois corrija cada divergência na fonte, sem relaxar o script.
 
 ## Iterações e ajustes
 
-Foram **3 iterações principais**: (1) extração e classificação, (2) redação dos documentos, (3) validação automatizada e correção. Nas iterações 2 e 3, estes foram os pontos em que a primeira versão estava errada ou superficial:
+Foram **4 iterações principais**: (1) extração e classificação, (2) redação dos documentos, (3) validação automatizada e correção, (4) auditoria final contra as "Dicas Finais" do enunciado. Nas iterações 2 e 3, estes foram os pontos em que a primeira versão estava errada ou superficial:
 
 1. **Ambiguidade das "5 tentativas".** A primeira leitura tratava "5 tentativas" como 5 envios no total. A conta não fecha: com 5 envios só cabem 4 intervalos (1m+5m+30m+2h ≈ 2h36), e o Diego fala em "quase 15 horas" usando os 5 intervalos (≈ 14h36). Ajuste: o FDD adota "1 envio inicial + 5 retentativas", e a ambiguidade virou a questão em aberto `RFC-OQ-07` em vez de ser resolvida em silêncio.
 2. **Conflito entre o código de erro e o middleware real.** O rascunho dizia que a URL `http` seria recusada "no schema Zod com `WEBHOOK_INVALID_URL`". Lendo `src/middlewares/validate.middleware.ts`, todo `ZodError` vira `VALIDATION_ERROR`. Lendo `src/shared/errors/http-errors.ts`, `NotFoundError` fixa o código `NOT_FOUND`. Ajuste: a regra https fica num schema Zod dedicado, executado no service, e as classes `Webhook*Error` estendem `AppError` diretamente (ADR-006, FDD-INT-03 e FDD-INT-05).
@@ -95,6 +95,13 @@ Foram **3 iterações principais**: (1) extração e classificação, (2) redaç
 5. **FK em cascata apagaria eventos.** O rascunho do modelo tinha FK `orderId → orders` com cascade. `OrderService.delete` permite apagar pedidos `CANCELLED`, o que apagaria o próprio evento de cancelamento ainda pendente. Ajuste: `orderId` ficou sem FK (FDD-DADOS-04).
 6. **Bytes assinados instáveis.** O payload estava como coluna `JSON`. O MySQL reordena chaves de JSON, e o HMAC precisa dos mesmos bytes em todo retry. Ajuste: o payload é guardado como texto serializado (FDD-DADOS-05).
 7. **Achados da validação automatizada.** O script apontou arquivos que ainda não existem (`src/worker.ts`, `src/modules/webhooks/`) citados sem a marcação "(novo)" no ADR-006 e no Tracker, o que feriria o critério "nenhum arquivo mencionado é inexistente". Ajuste: tudo marcado. O script também confirmou que todos os timestamps citados existem e que ~86% das linhas do Tracker são `TRANSCRICAO`.
+8. **Auditoria contra as Dicas Finais (iteração 4).** Procurei itens descartados vazando como requisito (e-mail, dashboard, rate limit, inbound, arquivamento): nenhum, todos só em "fora de escopo" ou "em aberto". A revisão linha a linha do Tracker, porém, achou quatro problemas:
+   - **Meta contraditória.** O PRD-OBJ-01 fixava meta < 10 s, mas a justificativa somava 2 s de polling + 10 s de timeout = 12 s.
+   - **Origem fraca no Tracker.** RFC-META-01 apontava para uma fala que não tratava de revisores.
+   - **Códigos de erro sem origem marcada.** Só três códigos `WEBHOOK_*` foram citados na reunião; os outros nove, derivados do prefixo, apareciam como se tivessem sido falados.
+   - **Detalhes inventados sem marcação.** O nome da rota de rotação e a ordem de deploy não foram definidos na reunião.
+
+   Ajuste: meta reescrita, origem corrigida e os itens derivados marcados como **(proposta FDD)** (FDD-IMP-10 e FDD-IMP-11).
 
 ## Como navegar a entrega
 

@@ -535,6 +535,8 @@ A assinatura cobre **o corpo** do request ([09:22] Sofia). `X-Timestamp` **não*
 
 Todas as classes estendem `AppError` (`src/shared/errors/app-error.ts`) com prefixo `WEBHOOK_` ([09:28] Bruno, [09:29] Larissa).
 
+A reunião citou explicitamente só três códigos: `WEBHOOK_NOT_FOUND`, `WEBHOOK_INVALID_URL` e `WEBHOOK_SECRET_REQUIRED` ([09:28] Bruno, "etc."). Os demais seguem a regra do prefixo e derivam de comportamentos decididos (filtro de eventos, DLQ, replay, timeout, limite de 64KB). Os nomes são **(proposta FDD)** ([FDD-IMP-10](#14-decisões-de-implementação-propostas-neste-fdd)).
+
 | ID | Código | HTTP | Classe | Onde ocorre | Comportamento |
 | --- | --- | --- | --- | --- | --- |
 | FDD-ERR-01 | `WEBHOOK_NOT_FOUND` | 404 | `WebhookNotFoundError` | PATCH, DELETE, rotate, deliveries, replay | Resposta de erro padrão |
@@ -675,7 +677,7 @@ import { publishWebhookEvent } from '../webhooks/webhook.publisher.js';
 | FDD-DEP-02 | **Prisma 5.22 / MySQL**: as tabelas novas entram por migration aditiva. Nenhuma coluna existente é alterada, então a migration é retrocompatível com a API atual. |
 | FDD-DEP-03 | **`uuid` 11** (já presente): geração do `eventId` antes do INSERT. |
 | FDD-DEP-04 | **Contratos existentes**: nenhum endpoint atual muda. `PATCH /orders/:id/status` ganha uma leitura e N inserts. O único modo de falha novo é um 500 se a outbox estiver indisponível, o que é intencional. |
-| FDD-DEP-05 | **Ordem de deploy**: (1) migration, (2) API com o publisher, (3) worker. Eventos gerados antes do worker subir ficam `PENDING` e são enviados quando ele inicia. |
+| FDD-DEP-05 | **Ordem de deploy** **(proposta FDD)**: (1) migration, (2) API com o publisher, (3) worker. Eventos gerados antes do worker subir ficam `PENDING` e são enviados quando ele inicia, já que o worker é um processo independente ([09:11] Diego). |
 | FDD-DEP-06 | **Revisão de segurança** da Sofia, com pelo menos 2 dias úteis antes do deploy ([09:46] Sofia). |
 | FDD-DEP-07 | **Plano de entrega** ([09:46] Larissa): sprint 1, modelagem de outbox e DLQ; sprint 2, worker e retry; sprint 3, CRUD e deliveries (½), integração no `order.service` e testes E2E (½), HMAC, schemas e validações, mais a revisão da Sofia no fim. |
 
@@ -725,3 +727,5 @@ Itens que **não** foram fechados na reunião, derivados das decisões tomadas, 
 | FDD-IMP-07 | Webhook inativo: evento vai para a DLQ, não é descartado (FDD-FLX-10) | Estado ativo na configuração ([09:21] Bruno) |
 | FDD-IMP-08 | `redirect: 'manual'` (FDD-RES-09) | TLS obrigatório ([09:23] Sofia) |
 | FDD-IMP-09 | Interpretação "1 envio + 5 retentativas" (FDD-FLX-19) | Agenda de 5 intervalos e "quase 15 horas" ([09:17] Diego) |
+| FDD-IMP-10 | Nomes dos códigos `WEBHOOK_*` além dos três citados na reunião (§7) | Regra de prefixo ([09:29] Larissa) e exemplos ([09:28] Bruno) |
+| FDD-IMP-11 | Rota `POST /webhooks/:id/rotate-secret` (o caminho não foi definido) | "Endpoint pro cliente conseguir pedir nova secret pela API" ([09:21] Sofia) |

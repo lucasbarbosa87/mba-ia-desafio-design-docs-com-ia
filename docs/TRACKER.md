@@ -93,7 +93,7 @@ Referência cruzada entre cada item registrado nos documentos ([PRD](PRD.md), [R
 
 | ID | Documento | Tipo | Conteúdo (resumo) | Fonte | Localização |
 | --- | --- | --- | --- | --- | --- |
-| RFC-META-01 | docs/RFC.md | Metadado | Revisores = participantes da reunião | TRANSCRICAO | [09:00] Larissa |
+| RFC-META-01 | docs/RFC.md | Metadado | Revisores = participantes; RFC submetido à revisão com Bruno e Diego | TRANSCRICAO | [09:50] Larissa |
 | RFC-CTX-01 | docs/RFC.md | Restrição | Time pequeno, sem apetite para infra nova | TRANSCRICAO | [09:07] Diego |
 | RFC-CTX-02 | docs/RFC.md | Restrição | Mudança de status não pode depender do cliente | TRANSCRICAO | [09:04] Bruno |
 | RFC-CTX-03 | docs/RFC.md | Restrição | Cliente precisa provar a origem e a integridade do envio | TRANSCRICAO | [09:19] Sofia |
@@ -238,7 +238,7 @@ Referência cruzada entre cada item registrado nos documentos ([PRD](PRD.md), [R
 | FDD-ERR-01 | docs/FDD.md | Erro | WEBHOOK_NOT_FOUND | TRANSCRICAO | [09:28] Bruno |
 | FDD-ERR-02 | docs/FDD.md | Erro | WEBHOOK_INVALID_URL | TRANSCRICAO | [09:23] Sofia |
 | FDD-ERR-03 | docs/FDD.md | Erro | WEBHOOK_INVALID_EVENT_FILTER (PENDING inalcançável) | CODIGO | src/modules/orders/order.status.ts |
-| FDD-ERR-04 | docs/FDD.md | Erro | WEBHOOK_CUSTOMER_NOT_FOUND | TRANSCRICAO | [09:29] Larissa |
+| FDD-ERR-04 | docs/FDD.md | Erro (proposta FDD) | WEBHOOK_CUSTOMER_NOT_FOUND | TRANSCRICAO | [09:29] Larissa |
 | FDD-ERR-05 | docs/FDD.md | Erro | WEBHOOK_INACTIVE | TRANSCRICAO | [09:21] Bruno |
 | FDD-ERR-06 | docs/FDD.md | Erro | WEBHOOK_DEAD_LETTER_NOT_FOUND | TRANSCRICAO | [09:18] Diego |
 | FDD-ERR-07 | docs/FDD.md | Erro | WEBHOOK_DEAD_LETTER_ALREADY_REPLAYED | TRANSCRICAO | [09:36] Sofia |
@@ -297,7 +297,7 @@ Referência cruzada entre cada item registrado nos documentos ([PRD](PRD.md), [R
 | FDD-DEP-02 | docs/FDD.md | Compatibilidade | Migration aditiva retrocompatível | CODIGO | prisma/migrations/20260519182739_init/migration.sql |
 | FDD-DEP-03 | docs/FDD.md | Dependência | `uuid` já presente | CODIGO | package.json |
 | FDD-DEP-04 | docs/FDD.md | Compatibilidade | Contratos existentes inalterados; 500 se outbox falhar | TRANSCRICAO | [09:40] Bruno |
-| FDD-DEP-05 | docs/FDD.md | Compatibilidade | Ordem de deploy: migration, API, worker | TRANSCRICAO | [09:11] Diego |
+| FDD-DEP-05 | docs/FDD.md | Proposta de implementação | Ordem de deploy: migration, API, worker (worker independente) | TRANSCRICAO | [09:11] Diego |
 | FDD-DEP-06 | docs/FDD.md | Dependência | Revisão de segurança de 2 dias | TRANSCRICAO | [09:46] Sofia |
 | FDD-DEP-07 | docs/FDD.md | Plano | Divisão das 3 sprints | TRANSCRICAO | [09:46] Larissa |
 | FDD-AC-01 | docs/FDD.md | Critério técnico | Rollback do status se o publisher falhar | TRANSCRICAO | [09:40] Bruno |
@@ -330,3 +330,5 @@ Referência cruzada entre cada item registrado nos documentos ([PRD](PRD.md), [R
 | FDD-IMP-07 | docs/FDD.md | Proposta de implementação | Webhook inativo vai para a DLQ | TRANSCRICAO | [09:21] Bruno |
 | FDD-IMP-08 | docs/FDD.md | Proposta de implementação | redirect manual | TRANSCRICAO | [09:23] Sofia |
 | FDD-IMP-09 | docs/FDD.md | Proposta de implementação | 1 envio + 5 retentativas | TRANSCRICAO | [09:17] Diego |
+| FDD-IMP-10 | docs/FDD.md | Proposta de implementação | Códigos WEBHOOK_* além dos três citados | TRANSCRICAO | [09:28] Bruno |
+| FDD-IMP-11 | docs/FDD.md | Proposta de implementação | Rota rotate-secret | TRANSCRICAO | [09:21] Sofia |
